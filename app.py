@@ -2,7 +2,7 @@ import os
 from flask import Flask, request, render_template_string, send_from_directory, redirect, session, url_for
 from flask_bcrypt import Bcrypt
 
-UPLOAD_FOLDER = "/home/jfsoares/myapp/uploads"
+UPLOAD_FOLDER = "/home/umdrive/uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 app = Flask(__name__)
@@ -24,7 +24,7 @@ HTML_LOGIN = """
 """
 
 HTML_FILES = """
-<h2>Gestão de Ficheiros</h2>
+<h2>UM Drive</h2>
 <p>Autenticado como {{ user }} | <a href="/logout">Logout</a></p>
 <form action="/upload" method="post" enctype="multipart/form-data">
   <input type="file" name="file">
@@ -93,3 +93,4 @@ def delete_file(filename):
     
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
+
