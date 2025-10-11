@@ -53,6 +53,30 @@ def login_required(func):
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    """Autenticação de utilizadores
+    ---
+    post:
+      summary: Faz login de um utilizador
+      description: Permite autenticar um utilizador com username e password.
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - name: username
+          in: formData
+          type: string
+          required: true
+          description: Nome de utilizador
+        - name: password
+          in: formData
+          type: string
+          required: true
+          description: Palavra-passe
+      responses:
+        302:
+          description: Redireciona para a página inicial em caso de sucesso
+        200:
+          description: Mostra o formulário de login se for um pedido GET
+    """
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
@@ -65,18 +89,53 @@ def login():
 
 @app.route("/logout")
 def logout():
+    """Logout do utilizador
+    ---
+    get:
+      summary: Termina a sessão de um utilizador
+      description: Limpa a sessão e redireciona para a página de login.
+      responses:
+        302:
+          description: Redireciona para /login após terminar a sessão
+    """
     session.clear()
     return redirect("/login")
 
 @app.route("/")
 @login_required
 def index():
+    """Listagem de ficheiros
+    ---
+    get:
+      summary: Mostra a lista de ficheiros disponíveis
+      description: Retorna uma página HTML com os ficheiros no diretório de uploads.
+      responses:
+        200:
+          description: Página HTML com a lista de ficheiros
+    """
     files = os.listdir(UPLOAD_FOLDER)
     return render_template_string(HTML_FILES, files=files, user=session.get("username"))
 
 @app.route("/upload", methods=["POST"])
 @login_required
 def upload():
+    """Upload de ficheiros
+    ---
+    post:
+      summary: Faz upload de um ficheiro
+      description: Recebe um ficheiro através de formulário e guarda-o no servidor.
+      consumes:
+        - multipart/form-data
+      parameters:
+        - name: file
+          in: formData
+          type: file
+          required: true
+          description: Ficheiro a carregar
+      responses:
+        302:
+          description: Redireciona para a página inicial após o upload
+    """
     file = request.files['file']
     if file:
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
@@ -85,11 +144,43 @@ def upload():
 @app.route("/files/<filename>")
 @login_required
 def serve_file(filename):
+    """Download de ficheiro
+    ---
+    get:
+      summary: Faz download de um ficheiro
+      description: Retorna o ficheiro solicitado se existir no diretório de uploads.
+      parameters:
+        - name: filename
+          in: path
+          type: string
+          required: true
+          description: Nome do ficheiro
+      responses:
+        200:
+          description: Ficheiro retornado com sucesso
+        404:
+          description: Ficheiro não encontrado
+    """
     return send_from_directory(UPLOAD_FOLDER, filename)
 
 @app.route("/delete/<filename>")
 @login_required
 def delete_file(filename):
+    """Eliminação de ficheiro
+    ---
+    get:
+      summary: Apaga um ficheiro do servidor
+      description: Remove o ficheiro indicado e redireciona para a página inicial.
+      parameters:
+        - name: filename
+          in: path
+          type: string
+          required: true
+          description: Nome do ficheiro a apagar
+      responses:
+        302:
+          description: Redireciona para a página principal após apagar o ficheiro
+    """
     os.remove(os.path.join(UPLOAD_FOLDER, filename))
     return redirect("/")
     
