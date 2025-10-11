@@ -101,8 +101,8 @@ def logout():
     session.clear()
     return redirect("/login")
 
-@app.route("/")
 @login_required
+@app.route("/")
 def index():
     """Listagem de ficheiros
     ---
@@ -116,8 +116,8 @@ def index():
     files = os.listdir(UPLOAD_FOLDER)
     return render_template_string(HTML_FILES, files=files, user=session.get("username"))
 
-@app.route("/upload", methods=["POST"])
 @login_required
+@app.route("/upload", methods=["POST"])
 def upload():
     """Upload de ficheiros
     ---
@@ -141,8 +141,8 @@ def upload():
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
     return redirect("/")
 
-@app.route("/files/<filename>")
 @login_required
+@app.route("/files/<filename>")
 def serve_file(filename):
     """Download de ficheiro
     ---
@@ -163,8 +163,8 @@ def serve_file(filename):
     """
     return send_from_directory(UPLOAD_FOLDER, filename)
 
-@app.route("/delete/<filename>")
 @login_required
+@app.route("/delete/<filename>")
 def delete_file(filename):
     """Eliminação de ficheiro
     ---
