@@ -1,11 +1,13 @@
 import os
 from flask import Flask, request, render_template_string, send_from_directory, redirect, session, url_for
 from flask_bcrypt import Bcrypt
+from flasgger import Swagger
 
 UPLOAD_FOLDER = "/home/umdrive/uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 app = Flask(__name__)
+swagger = Swagger(app)
 app.secret_key = "C87A55AA7182A34B9A4FCF3FFE1E9"
 bcrypt = Bcrypt(app)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
