@@ -3,7 +3,7 @@ from flask import Flask, request, render_template_string, send_from_directory, r
 from flask_bcrypt import Bcrypt
 from flasgger import Swagger
 
-UPLOAD_FOLDER = "/mnt/storage/uploads"
+UPLOAD_FOLDER = os.environ.get("UPLOAD_FOLDER", "/app/data")
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 app = Flask(__name__)

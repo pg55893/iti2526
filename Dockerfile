@@ -23,4 +23,4 @@ USER webapp
 
 EXPOSE 8080
 # "App.py" => módulo "App"; assume variável Flask chamada "app" lá dentro
-CMD ["gunicorn","-w","3","-k","gthread","-b","0.0.0.0:8080","App:app","--timeout","60"]
+CMD ["gunicorn","-w","3","-k","gthread","-b","0.0.0.0:8080","app:app","--timeout","60"]
