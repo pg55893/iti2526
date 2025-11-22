@@ -1,9 +1,0 @@
-# Arrancar
-docker compose up -d
-
-# Terminar
-docker compose down
-
-# Se alterar a app.py
-docker compose build
-docker compose up -d
