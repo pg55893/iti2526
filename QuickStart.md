@@ -9,4 +9,7 @@ docker-compose up -d
 
 # Efetuar testes
 ./test-loadbalancing-mac.sh all
+
+# Parar tudo
+docker-compose down
 ```
