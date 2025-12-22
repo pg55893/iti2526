@@ -189,12 +189,12 @@ test_services() {
     print_info "Testando conectividade dos serviços..."
     echo ""
     
+    # Testar serviços normais
     services=(
         "webapp.localhost:80"
         "traefik.localhost:80"
         "prometheus.localhost:80"
         "grafana.localhost:80"
-        "cadvisor.localhost:80"
     )
     
     for service in "${services[@]}"; do
@@ -204,6 +204,14 @@ test_services() {
             print_error "$service NÃO está acessível"
         fi
     done
+    
+    # Testar cAdvisor com path correto
+    if curl -s -o /dev/null -w "%{http_code}" "http://cadvisor.localhost/containers/" | grep -q "200\|302"; then
+        print_success "cadvisor.localhost/containers/ está acessível"
+    else
+        print_error "cadvisor.localhost/containers/ NÃO está acessível"
+    fi
+    
     echo ""
 }
 
