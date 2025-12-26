@@ -109,7 +109,7 @@ test_load_distribution() {
     if [ $success_count -eq $NUM_REQUESTS ]; then
         print_success "Todos os $NUM_REQUESTS requests foram bem sucedidos"
         echo ""
-        echo "ℹ️  Load balancing está funcionando - requisições distribuídas entre réplicas"
+        echo " Load balancing está funcionando - requisições distribuídas entre réplicas"
     elif [ $success_rate -ge 90 ]; then
         print_warning "$success_count de $NUM_REQUESTS requests foram bem sucedidos (${success_rate}%)"
     else
@@ -235,7 +235,7 @@ test_traefik_health() {
             backends=$(jq -r '.http.services | to_entries | length' /tmp/traefik_api_$$.json 2>/dev/null || echo "N/A")
             echo "Serviços registados: $backends"
         else
-            echo "ℹ️  Instale 'jq' para análise detalhada: brew install jq"
+            echo " Instale 'jq' para análise detalhada: brew install jq"
         fi
         
         rm -f /tmp/traefik_api_$$.json
