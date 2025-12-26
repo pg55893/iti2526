@@ -2,7 +2,7 @@
 
 Este projeto inclui uma aplicação Flask de gestão de ficheiros com stack completa de monitorização usando cAdvisor, Prometheus e Grafana.
 
-## 🚀 Componentes
+## Componentes
 
 ### Aplicação Principal
 - **WebApp** (porta 8080): Aplicação Flask de upload/download de ficheiros
@@ -15,7 +15,7 @@ Este projeto inclui uma aplicação Flask de gestão de ficheiros com stack comp
 - **Grafana** (porta 3000): Visualização de dashboards
   - Login: `admin` / `admin123`
 
-## 📊 Métricas Monitorizadas
+## Métricas Monitorizadas
 
 ### Container Metrics (via cAdvisor)
 - **CPU Usage**: Utilização de CPU por container
@@ -29,7 +29,7 @@ Este projeto inclui uma aplicação Flask de gestão de ficheiros com stack comp
 - Estatísticas de rede
 - Filesystem usage
 
-## 🛠️ Instalação e Configuração
+## Instalação e Configuração
 
 ### Pré-requisitos
 - Docker e Docker Compose instalados
@@ -65,7 +65,7 @@ docker-compose up -d
 docker-compose ps
 ```
 
-## 🌐 Acesso às Interfaces
+## Acesso às Interfaces
 
 | Serviço | URL | Credenciais |
 |---------|-----|-------------|
@@ -73,9 +73,9 @@ docker-compose ps
 | cAdvisor | http://cadvisor.localhost | - |
 | Prometheus | http://prometheus.localhost | - |
 | Node Exporter | http://localhost:9100/metrics | - |
-| Grafana | http://grafaba.localhost | admin / admin123 |
+| Grafana | http://grafana.localhost | admin / admin123 |
 
-## 📈 Dashboards do Grafana
+## Dashboards do Grafana
 
 ### Dashboard Pré-configurado: "Docker Containers Monitoring"
 
@@ -91,11 +91,11 @@ O dashboard inclui:
 
 ### Aceder ao Dashboard
 
-1. Abrir http://localhost:3000
+1. Abrir http://grafana.localhost
 2. Login com `admin` / `admin123`
-3. O dashboard "Docker Containers Monitoring" é carregado automaticamente
+3. O dashboard é carregado automaticamente
 
-## 🔍 Queries Prometheus Úteis
+## Queries Prometheus Úteis
 
 Aceder a http://localhost:9090 e experimentar:
 
@@ -113,59 +113,24 @@ rate(container_network_receive_bytes_total{name="webapp"}[5m])
 count(container_last_seen) by (name)
 ```
 
-## 🔧 Configuração Avançada
-
-### Ajustar Retenção de Dados do Prometheus
-No `docker-compose.yml`, alterar:
-```yaml
---storage.tsdb.retention.time=30d  # Mudar para 7d, 60d, etc.
-```
-
 ### Adicionar Novos Dashboards
 1. Criar JSON do dashboard no Grafana UI
 2. Exportar e colocar em `grafana/provisioning/dashboards/`
 3. Reiniciar Grafana: `docker-compose restart grafana`
 
-### Configurar Alertas
-Editar `prometheus.yml` e adicionar:
-```yaml
-alerting:
-  alertmanagers:
-    - static_configs:
-        - targets: ['alertmanager:9093']
-```
-
-## 📦 Volumes Persistentes
+## Volumes Persistentes
 
 Os seguintes volumes são criados para persistência de dados:
 - `dados_nfs`: Dados da aplicação (via NFS)
 - `prometheus_data`: Métricas do Prometheus
 - `grafana_data`: Configuração e dashboards do Grafana
 
-## 🛡️ Notas de Segurança
-
-⚠️ **IMPORTANTE para Produção:**
-1. Mudar passwords default (webapp, Grafana)
-2. Configurar HTTPS/TLS
-3. Restringir acesso às portas de monitorização
-4. Implementar autenticação no Prometheus
-5. Configurar firewall adequado
-
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### cAdvisor não está a recolher métricas
 ```bash
 # Verificar se o cAdvisor tem acesso ao Docker socket
 docker logs cadvisor
-```
-
-### Grafana não mostra dados
-```bash
-# Verificar se o Prometheus está a scrape corretamente
-curl http://localhost:9090/api/v1/targets
-
-# Verificar logs do Grafana
-docker logs grafana
 ```
 
 ### Erros de permissões NFS
@@ -174,7 +139,7 @@ docker logs grafana
 docker exec webapp df -h | grep nfs
 ```
 
-## 📝 Comandos Úteis
+## Comandos Úteis
 
 ```bash
 # Ver logs de um serviço específico
@@ -193,20 +158,7 @@ docker-compose down -v
 docker stats
 ```
 
-## 🔄 Manutenção
-
-### Backup de Dados
-```bash
-# Backup do Prometheus
-docker run --rm -v prometheus_data:/data -v $(pwd):/backup \
-  alpine tar czf /backup/prometheus-backup.tar.gz /data
-
-# Backup do Grafana
-docker run --rm -v grafana_data:/data -v $(pwd):/backup \
-  alpine tar czf /backup/grafana-backup.tar.gz /data
-```
-
-## 📚 Recursos Adicionais
+## Recursos Adicionais
 
 - [Documentação cAdvisor](https://github.com/google/cadvisor)
 - [Documentação Prometheus](https://prometheus.io/docs/)
