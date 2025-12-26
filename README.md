@@ -69,11 +69,11 @@ docker-compose ps
 
 | Serviço | URL | Credenciais |
 |---------|-----|-------------|
-| WebApp | http://localhost:8080 | admin / 1234 |
-| cAdvisor | http://localhost:8081 | - |
-| Prometheus | http://localhost:9090 | - |
+| WebApp | http://webapp.localhost | admin / 1234 |
+| cAdvisor | http://cadvisor.localhost | - |
+| Prometheus | http://prometheus.localhost | - |
 | Node Exporter | http://localhost:9100/metrics | - |
-| Grafana | http://localhost:3000 | admin / admin123 |
+| Grafana | http://grafaba.localhost | admin / admin123 |
 
 ## 📈 Dashboards do Grafana
 
